@@ -12,11 +12,9 @@ class PostsController < ApplicationController
 	end
 
 	def create
-	  @post = Post.new
-	  @post.title = params[:title]
-	  @post.description = params[:description]
-	  @post.save
-	  redirect_to post_path(@post)
+		white_list = params.require(:post).permit(:title, :description)
+	  	@post = Post.create(white_list)
+		redirect_to @post
 	end
 
 	def edit
@@ -24,8 +22,9 @@ class PostsController < ApplicationController
 	end
 
 	def update
+		white_list = params.require(:post).permit(:title, :description)
 	  @post = Post.find(params[:id])
-	  @post.update(title: params[:title], description: params[:description])
-	  redirect_to post_path(@post)
+	  @post.update(white_list)
+	  redirect_to @post
 	end
 end
